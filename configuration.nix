@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./modules/wireguard.nix
       # /home/xosc/mcserber/mcserber.nix
     ];
 
@@ -92,6 +93,8 @@
     iputils
     unzip
     wget
+
+    wireguard-tools
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -129,7 +132,7 @@
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
-    ports = [ 22 ];
+    ports = [ 443 ];
     settings = {
       PermitRootLogin = "no";
       AllowUsers = ["xosc"];
@@ -143,8 +146,8 @@
   };
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 25565 ];
-  networking.firewall.allowedUDPPorts = [ 25565 ];
+  networking.firewall.allowedTCPPorts = [ 25565 8080 80 443 ];
+  networking.firewall.allowedUDPPorts = [ 25565 8080 80 443 ];
   # Or disable the firewall altogether.
   networking.firewall.enable = true;
 
