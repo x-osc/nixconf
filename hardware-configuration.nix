@@ -19,12 +19,6 @@
       options = [ "subvol=root" ];
     };
 
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/0e560b25-de29-4728-86d6-ca46b42c3f9b";
-      fsType = "btrfs";
-      options = [ "subvol=home" ];
-    };
-
   fileSystems."/etc" =
     { device = "/dev/disk/by-uuid/0e560b25-de29-4728-86d6-ca46b42c3f9b";
       fsType = "btrfs";
@@ -43,10 +37,15 @@
       options = [ "subvol=log" ];
     };
 
-  fileSystems."/data/mc" =
+  fileSystems."/mnt" =
     { device = "/dev/disk/by-uuid/0e560b25-de29-4728-86d6-ca46b42c3f9b";
       fsType = "btrfs";
-      options = [ "subvol=mc" ];
+    };
+
+  fileSystems."/home" =
+    { device = "/dev/disk/by-uuid/0e560b25-de29-4728-86d6-ca46b42c3f9b";
+      fsType = "btrfs";
+      options = [ "subvol=home" ];
     };
 
   fileSystems."/boot" =
@@ -55,7 +54,9 @@
       options = [ "fmask=0022" "dmask=0022" ];
     };
 
-  swapDevices = [ ];
+  swapDevices =
+    [ { device = "/dev/disk/by-uuid/d5a90a80-dee1-4f62-a295-4809a5c8fc3f"; }
+    ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

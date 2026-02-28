@@ -39,17 +39,33 @@
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
 
+  boot.supportedFilesystems = [ "zfs" ];
+  boot.zfs.forceImportRoot = false;
+  networking.hostId = "bc2fead2";
+
   fileSystems = {
     "/".options = [ "compress=zstd" "relatime" ];
     "/home".options = [ "compress=zstd" "relatime" ];
     "/etc".options = [ "compress=zstd" "relatime" ];
     "/nix".options = [ "compress=zstd" "noatime" ];
     "/var/log".options = [ "compress=zstd" "relatime" ];
-    "/data/mc".options = [ "compress=zstd" "relatime" ];
   };
 
   services.btrfs.autoScrub.enable = true;
   services.btrfs.autoScrub.interval = "monthly";
+  
+  fileSystems."/data" =
+    { device = "lake";
+      fsType = "zfs";
+    };
+
+  fileSystems."/data/music" =
+    { device = "lake/music";
+      fsType = "zfs";
+    };
+
+  services.zfs.autoScrub.enable = true;
+  services.zfs.autoScrub.interval = "weekly";
 
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
