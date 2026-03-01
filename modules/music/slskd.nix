@@ -43,7 +43,10 @@
     };
   };
 
-  networking.firewall.allowedTCPPorts = [ config.services.slskd.settings.web.port ];
+  networking.firewall.allowedTCPPorts = [
+    config.services.slskd.settings.web.port
+    config.services.slskd.settings.soulseek.listen_port
+  ];
 
   users.users.slskd = {
     extraGroups = [ "media" ];

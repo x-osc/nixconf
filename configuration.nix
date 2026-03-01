@@ -11,6 +11,7 @@
       ./modules/wireguard.nix
       ./modules/music/slskd.nix
       ./modules/music/wrtag.nix
+      ./modules/music/navidrome.nix
       # /home/xosc/mcserber/mcserber.nix
     ];
 
