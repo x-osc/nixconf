@@ -38,7 +38,7 @@
         };
 
         wireguardConfig = {
-          ListenPort = 8080;
+          ListenPort = 51820;
 
           # ensure file is readable by `systemd-network` user
           PrivateKeyFile = "/etc/wireguard/wg0.key";

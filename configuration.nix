@@ -9,6 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./modules/wireguard.nix
+      ./modules/caddy.nix
       ./modules/music/slskd.nix
       ./modules/music/wrtag.nix
       ./modules/music/navidrome.nix

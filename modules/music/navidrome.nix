@@ -7,7 +7,7 @@
     settings = {
       Port = 4533;
       MusicFolder = "/data/music";
-      DataFolder = "/var/lib/navidrome";
+      DataFolder = "/data/navidrome";
       EnableInsightsCollector = true;
       Address = "0.0.0.0";
     };
