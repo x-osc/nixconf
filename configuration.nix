@@ -9,6 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./modules/wireguard.nix
+      ./modules/music/slskd.nix
       # /home/xosc/mcserber/mcserber.nix
     ];
 
@@ -61,6 +62,11 @@
 
   fileSystems."/data/music" =
     { device = "lake/music";
+      fsType = "zfs";
+    };
+
+  fileSystems."/data/slskd" =
+    { device = "lake/slskd";
       fsType = "zfs";
     };
 
