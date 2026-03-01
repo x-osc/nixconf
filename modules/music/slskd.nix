@@ -24,10 +24,28 @@
 
       directories.incomplete = "/data/slskd/incomplete";
       directories.downloads = "/data/slskd/downloads";
+
+      integration.scripts.write_tags = {
+        on = [ "DownloadDirectoryComplete" ];
+        run = {
+          command = ./run_wrtag.sh;
+        };
+      };
     };
 
     openFirewall = true;
   };
 
+  systemd.services.slskd = {
+    serviceConfig = {
+      Group = lib.mkForce "media";
+      UMask = 002;
+    };
+  };
+
   networking.firewall.allowedTCPPorts = [ config.services.slskd.settings.web.port ];
+
+  users.users.slskd = {
+    extraGroups = [ "media" ];
+  };
 }

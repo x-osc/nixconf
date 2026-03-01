@@ -10,6 +10,7 @@
       ./hardware-configuration.nix
       ./modules/wireguard.nix
       ./modules/music/slskd.nix
+      ./modules/music/wrtag.nix
       # /home/xosc/mcserber/mcserber.nix
     ];
 
@@ -93,10 +94,20 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
 
+  users.groups.media = {};
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.xosc = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "docker" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "docker" "media" ]; # Enable ‘sudo’ for the user.
+    shell = pkgs.fish;
+  };
+
+  programs.fish = {
+    enable = true;
+    interactiveShellInit = ''
+      set fish_greeting # Disable greeting
+    '';
   };
 
   # programs.firefox.enable = true;
@@ -115,6 +126,7 @@
     iputils
     unzip
     wget
+    tree
 
     wireguard-tools
   ];
