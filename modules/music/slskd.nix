@@ -1,6 +1,24 @@
 { config, pkgs, lib, ... }:
 
-{
+let
+  wrtag-hook = pkgs.writeShellScript "run_wrtag" ''
+    set -euo pipefail
+    
+    export PATH=${pkgs.jq}/bin:${pkgs.curl}/bin:$PATH
+    exec > >(${pkgs.systemd}/bin/systemd-cat -t wrtag) 2>&1
+    
+    echo "run_wrtag.sh started"
+    echo "SLSKD_SCRIPT_DATA: ''$SLSKD_SCRIPT_DATA"
+
+    download_path=$(echo "''${SLSKD_SCRIPT_DATA}" | jq -r .localDirectoryName)
+    echo "download path: ''$download_path"
+
+    curl \
+      --request POST \
+      --data-urlencode "path=''${download_path}" \
+      "http://:verycoolpassword@localhost:7373/op/move"
+  '';
+in {
   services.slskd = {
     enable = true;
     environmentFile = "/home/xosc/secrets/slskd.env";
@@ -26,15 +44,23 @@
       directories.downloads = "/data/slskd/downloads";
 
       integration.scripts.write_tags = {
-        on = [ "DownloadDirectoryComplete" ];
+        on = [
+          "DownloadDirectoryComplete"
+          # "DownloadFileComplete"
+        ];
         run = {
-          command = ./run_wrtag.sh;
+          executable = "${pkgs.bash}/bin/bash";
+          args = wrtag-hook;
         };
       };
     };
 
     openFirewall = true;
   };
+
+  environment.systemPackages = with pkgs; [
+    jq
+  ];
 
   systemd.services.slskd = {
     serviceConfig = {
@@ -50,5 +76,6 @@
 
   users.users.slskd = {
     extraGroups = [ "media" ];
+    shell = pkgs.bash;
   };
 }
